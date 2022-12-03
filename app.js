@@ -4,7 +4,7 @@ const keyboardFirstRow = document.querySelector("#keyboardFirstRow")
 const keyboardSecondRow = document.querySelector("#keyboardSecondRow")
 const keyboardThirdRow = document.querySelector("#keyboardThirdRow")
 
-keysFirstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", ]
+keysFirstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",]
 keysSecondRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"]
 keysThirdRow = ["Z", "X", "C", "V", "B", "N", "M"]
 
@@ -12,11 +12,15 @@ const rows = 6
 const columns = 5
 let currentRow = 0
 let currentColumn = 0
-const letreco = "vasco"
-const guesses = []
+let letreco = "VASCO"
+let letrecoMap = {}
+for (let index = 0; index < letreco.length; index++) {
+    letrecoMap[letreco[index]] = index
+}
+let guesses = []
 
 for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
-        guesses[rowIndex] = new Array(columns)
+    guesses[rowIndex] = new Array(columns)
     const tileRow = document.createElement("div")
     tileRow.setAttribute("id", "row" + rowIndex)
     tileRow.setAttribute("class", "tile-row")
@@ -30,13 +34,65 @@ for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
     tiles.append(tileRow)
 }
 
-const handleKeyboardOnClick = (key) => {
-    if(currentColumn === columns) {
-        return 
+const checkGuess = () => {
+    const guess = guesses[currentRow].join("")
+    if (guess.length !== columns) {
+        return
     }
-    const currentTile  = document.querySelector("#row" + currentRow + "column" + currentColumn
+
+    var currentColumns = document.querySelectorAll(".typing")
+    for (let index = 0; index < columns; index++) {
+        const letter = guess[index]
+        if (letrecoMap[letter] === undefined) {
+            currentColumns[index].classList.add("wrong")
+        } else {
+            if (letrecoMap[letter] === index) {
+                currentColumns[index].classList.add("right")
+            } else {
+                currentColumns[index].classList.add("displaced")
+            }
+        }
+    }
+
+    if(guess === letreco) {
+        window.alert("Tu é o brabo")
+    } else {
+        if(currentRow === rows -1) {
+            window.alert("Errrrrrrrrrrrou")
+        } else {
+            moveToNextRow()
+        }
+    }
+};
+
+const moveToNextRow = () => {
+    var typingColumns = document.querySelectorAll(".typing")
+    for (let index = 0; index < typingColumns.length; index++) {
+        typingColumns[index].classList.remove("typing")
+        typingColumns[index].classList.add("disabled")
+        
+    }
+    currentRow++
+    currentColumn = 0
+
+    const currentRowEl = document.querySelector("#row" + currentRow)
+    var currentColumns = currentRowEl.querySelectorAll(".tile-column")
+    for (let index = 0; index < currentColumns.length; index++) {
+        currentColumns[index].classList.remove("disabled")
+        currentColumns[index].classList.add("typing")
+        
+    }
+}
+
+
+const handleKeyboardOnClick = (key) => {
+    if (currentColumn === columns) {
+        return
+    }
+    const currentTile = document.querySelector("#row" + currentRow + "column" + currentColumn
     );
     currentTile.textContent = key
+    guesses[currentRow][currentColumn] = key
     currentColumn++
 }
 
@@ -55,17 +111,32 @@ createKeyboardRow(keysSecondRow, keyboardSecondRow)
 createKeyboardRow(keysThirdRow, keyboardThirdRow)
 
 const handleBackspace = () => {
-    console.log("apaga ")
+    if(currentColumn === 0) {
+        return
+    }
+
+    currentColumn--
+    guesses[currentRow][currentColumn] = ""
+    const tile = document.querySelector("#row" + currentRow + "column" + currentColumn)
+    tile.textContent = ""
 }
 const backspaceButton = document.createElement("button")
 backspaceButton.addEventListener("click", handleBackspace)
 backspaceButton.textContent = "<- backspace"
 backspaceAndEnterRow.append(backspaceButton)
 
-const handleEnter = () => {
-    console.log("verifica palavra ")
-}
 const enterButton = document.createElement("button")
-enterButton.addEventListener("click", handleEnter)
+enterButton.addEventListener("click", checkGuess)
 enterButton.textContent = "enter"
 backspaceAndEnterRow.append(enterButton)
+
+document.onkeydown = function (evt) {
+    evt = evt || window.evt
+    if(evt.key === "Enter") {
+        checkGuess();
+    } else if (evt.key === "Backspace") {
+        handleBackspace()
+    } else {
+        handleKeyboardOnClick(evt.key.toUpperCase())
+    }
+}
