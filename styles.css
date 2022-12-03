@@ -28,14 +28,14 @@
     align-items: center;
 }
 
-.title-row {
+.tile-row {
     margin-bottom: 1rem;
     justify-content: center;
     display: flex;
     box-sizing: border-box;
 }
 
-.title-column {
+.tile-column {
     background-color: #f4f3f1;
     color: #252525;
     height: 40px;

@@ -12,25 +12,32 @@ const rows = 6
 const columns = 5
 let currentRow = 0
 let currentColumn = 0
+const letreco = "vasco"
+const guesses = []
 
 for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+        guesses[rowIndex] = new Array(columns)
     const tileRow = document.createElement("div")
     tileRow.setAttribute("id", "row" + rowIndex)
     tileRow.setAttribute("class", "tile-row")
     for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
         const tileColumn = document.createElement("div")
         tileColumn.setAttribute("id", "row" + rowIndex + "column" + columnIndex)
-        tileColumn.setAttribute("class", "tile-column")
+        tileColumn.setAttribute("class", rowIndex === 0 ? "tile-column typing" : "tile-column disabled")
         tileRow.append(tileColumn)
-        
+        guesses[rowIndex][columnIndex] = ""
     }
     tiles.append(tileRow)
 }
 
 const handleKeyboardOnClick = (key) => {
+    if(currentColumn === columns) {
+        return 
+    }
     const currentTile  = document.querySelector("#row" + currentRow + "column" + currentColumn
     );
     currentTile.textContent = key
+    currentColumn++
 }
 
 const createKeyboardRow = (keys, keyboardRow) => {
