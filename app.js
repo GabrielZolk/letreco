@@ -38,3 +38,19 @@ const createKeyboardRow = (keys, keyboardRow) => {
 createKeyboardRow(keysFirstRow, keyboardFirstRow)
 createKeyboardRow(keysSecondRow, keyboardSecondRow)
 createKeyboardRow(keysThirdRow, keyboardThirdRow)
+
+const handleBackspace = () => {
+    console.log("apaga ")
+}
+const backspaceButton = document.createElement("button")
+backspaceButton.addEventListener("click", handleBackspace)
+backspaceButton.textContent = "<- backspace"
+backspaceAndEnterRow.append(backspaceButton)
+
+const handleEnter = () => {
+    console.log("verifica palavra ")
+}
+const enterButton = document.createElement("button")
+enterButton.addEventListener("click", handleEnter)
+enterButton.textContent = "enter"
+backspaceAndEnterRow.append(enterButton)
