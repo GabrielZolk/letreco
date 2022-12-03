@@ -25,10 +25,16 @@ for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
     tiles.append(tileRow)
 }
 
-keysFirstRow.forEach((key) => {
-    var buttonElement = document.createElement("button")
-    buttonElement.textContent = key
-    buttonElement.setAttribute("id", key)
-    buttonElement.addEventListener("click", () => console.log("TECLA: ", key))
-    keyboardFirstRow.append(buttonElement)
-})
+const createKeyboardRow = (keys, keyboardRow) => {
+    keys.forEach((key) => {
+        var buttonElement = document.createElement("button")
+        buttonElement.textContent = key
+        buttonElement.setAttribute("id", key)
+        buttonElement.addEventListener("click", () => console.log("TECLA: ", key))
+        keyboardRow.append(buttonElement)
+    })
+}
+
+createKeyboardRow(keysFirstRow, keyboardFirstRow)
+createKeyboardRow(keysSecondRow, keyboardSecondRow)
+createKeyboardRow(keysThirdRow, keyboardThirdRow)
