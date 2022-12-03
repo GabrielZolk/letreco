@@ -10,6 +10,8 @@ keysThirdRow = ["Z", "X", "C", "V", "B", "N", "M"]
 
 const rows = 6
 const columns = 5
+let currentRow = 0
+let currentColumn = 0
 
 for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
     const tileRow = document.createElement("div")
@@ -25,12 +27,18 @@ for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
     tiles.append(tileRow)
 }
 
+const handleKeyboardOnClick = (key) => {
+    const currentTile  = document.querySelector("#row" + currentRow + "column" + currentColumn
+    );
+    currentTile.textContent = key
+}
+
 const createKeyboardRow = (keys, keyboardRow) => {
     keys.forEach((key) => {
         var buttonElement = document.createElement("button")
         buttonElement.textContent = key
         buttonElement.setAttribute("id", key)
-        buttonElement.addEventListener("click", () => console.log("TECLA: ", key))
+        buttonElement.addEventListener("click", () => handleKeyboardOnClick(key))
         keyboardRow.append(buttonElement)
     })
 }
