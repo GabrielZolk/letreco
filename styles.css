@@ -1,4 +1,6 @@
 .title-container {
+    font-family: Acme, sans-serif;
+    font-size: 20px;
     text-align: center;
     width: 510px;
     margin-top: 1rem;
